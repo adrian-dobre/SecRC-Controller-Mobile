@@ -2,21 +2,15 @@
 
 ## What's this about?
 
-This is the flutter-based mobile application used to control
-the [SecRC Controller device](https://github.com/adrian-dobre/Phantom-Controller). It can perform
-all the functions that the standard remote, shipped with NovingAir Phantom (Wireless or Active), can
-perform plus monitoring temperature, relative humidity, ambient light, pressure and CO2 levels.
+This is the flutter-based mobile application used to control the [SecRC Controller device](https://github.com/adrian-dobre/SecRC-Controller). It can perform
+all the functions that the SEC-RC Control Panel can perform plus monitoring temperature, relative humidity, pressure and CO2 levels.
 
-![App Demo](./resources/demo/app-demo.gif?raw=true)
+![App Demo](./resources/demo/mobile-app-interface.jpg?raw=true)
 ![Config Screen](./resources/demo/config-screen.png?raw=true)
 
 ## Why do it?
 
 Well, due to a few of reasons:
-
-1. NovingAir Phantom HRV system does not have a connected solution, just
-   a [standard IR remote control](https://ventilatie-recuperare.ro/produs/telecomanda-tc-phantom-active/)
-2. It makes sense to combine the "controller" with a Weather Station - this can allow creating
-   automations without having to purchase separate sensors
-3. I like controlling my devices from my phone. I used a general purpose, programmable RC (Broadlink
-   RM4 mini) for this in the past, but I didn't quite like how everything looked/worked.
+1. As of right now, there is no "smart" (connected) solution offered by the manufacturer for the RC variant of the Sevi-160 Heat-Recovery Ventilation System
+2. It makes sense to combine the "controller" with a Weather Station - this can allow creating automations without having to purchase separate sensors
+3. I like controlling my devices from my phone.
