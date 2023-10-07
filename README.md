@@ -6,7 +6,7 @@ This is the flutter-based mobile application used to control the [SecRC Controll
 all the functions that the SEC-RC Control Panel can perform plus monitoring temperature, relative humidity, pressure and CO2 levels.
 
 ![App Demo](./resources/demo/mobile-app-interface.jpg?raw=true)
-![Config Screen](./resources/demo/config-screen.png?raw=true)
+![Config Screen](./resources/demo/config-screen.jpeg?raw=true)
 
 ## Why do it?
 
