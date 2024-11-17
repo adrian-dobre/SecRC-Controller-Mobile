@@ -83,13 +83,16 @@ class StateChart extends Container {
                             xValueMapper: (ClimateHistory climate, index) =>
                                 index,
                             yValueMapper: y2ValueMapper,
-                            yAxisName: 'Secondary'),
+                            yAxisName: 'Secondary',
+                            animationDuration: 0
+                            ),
                         FastLineSeries<ClimateHistory, int>(
                           // Bind data source
                           dataSource: history,
                           xValueMapper: (ClimateHistory climate, index) =>
                               index,
                           yValueMapper: yValueMapper,
+                          animationDuration: 2000,
                           onCreateShader: (ShaderDetails details) {
                             return ui.Gradient.linear(details.rect.bottomCenter,
                                 details.rect.topCenter, colors, stops);

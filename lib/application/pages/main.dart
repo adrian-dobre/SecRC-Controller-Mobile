@@ -296,7 +296,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
             padding: EdgeInsets.zero,
             children: [
               SizedBox(
-                  height: 120,
+                  height: 135,
                   child: DrawerHeader(
                     decoration: BoxDecoration(
                       color: themeColorGradientEnd,
