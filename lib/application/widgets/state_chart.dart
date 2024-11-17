@@ -43,9 +43,9 @@ class StateChart extends Container {
                   height: 80,
                   child: SfCartesianChart(
                       onTrackballPositionChanging: (TrackballArgs args) {
-                        ChartSeries<dynamic, dynamic> series =
-                            args.chartPointInfo.series as ChartSeries;
-                        if (series.name == 'Secondary') {
+                        // FastLineSeries<dynamic, dynamic> series =
+                        //     args.chartPointInfo.series as FastLineSeries;
+                        if (args.chartPointInfo.series.name == 'Secondary') {
                           args.chartPointInfo.header = '';
                           args.chartPointInfo.label = '';
                         }

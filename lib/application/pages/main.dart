@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   int? co2;
   double? temperature;
   double? relativeHumidity;
-  double? pressure;
+  int? heatIndex;
   bool sendingCommand = false;
   bool refreshingData = false;
   Timer? refreshTimer;
@@ -43,7 +43,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   bool filterChangeRequired = false;
   List<ClimateHistory> history = [
     ClimateHistory(
-        temperature: 0, humidity: 0, pressure: 0, co2: 0, mode: 0, fanSpeed: 0)
+        temperature: 0, humidity: 0, heatIndex: 0, co2: 0, mode: 0, fanSpeed: 0)
   ];
 
   @override
@@ -177,7 +177,8 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
             co2 = value.climate.co2;
             temperature = value.climate.temperature;
             relativeHumidity = value.climate.humidity;
-            pressure = value.climate.pressure;
+            heatIndex =
+                getHeatIndex(value.climate.temperature, value.climate.humidity);
             filterChangeRequired = value.ventilation.filterChangeRequired;
           });
         })
@@ -255,7 +256,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
           fanSpeed = null;
           humidity = null;
           co2 = null;
-          pressure = null;
+          heatIndex = null;
           humidity = null;
           temperature = null;
         });
@@ -369,7 +370,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                                 label: ChartLabel(
                                   "TEMPERATURE",
                                   temperature,
-                                  "O",
+                                  "\u00B0C",
                                 ),
                                 history: history,
                                 yValueMapper: (ClimateHistory climate, _) =>
@@ -412,18 +413,25 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                                 width: chartWidth,
                               ).stateChart,
                               LabeledStateChart(
-                                label: ChartLabel(
-                                    "PRESSURE", pressure?.toDouble(), "MBAR",
+                                label: ChartLabel("FEELS LIKE",
+                                    heatIndex?.toDouble(), "\u00B0C",
                                     stripDecimals: true),
                                 history: history,
                                 yValueMapper: (ClimateHistory climate, _) =>
-                                    climate.pressure,
-                                minimum: 990,
-                                maximum: 1020,
+                                    climate.heatIndex,
+                                y2ValueMapper: (ClimateHistory climate, _) =>
+                                    climate.mode,
+                                minimum: 10,
+                                maximum: 40,
                                 colors: [
-                                  Colors.white,
+                                  Colors.blue,
+                                  Colors.green,
+                                  Colors.yellow,
+                                  Colors.orange,
+                                  Colors.red
                                 ],
-                                values: [990],
+                                values: [10, 20, 26, 28, 30],
+                                colorTransition: 1,
                                 width: chartWidth,
                               ).stateChart
                             ],

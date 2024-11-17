@@ -5,7 +5,6 @@ import 'package:secrc_controller/application/pages/main.dart';
 import 'application/helpers/colors.dart';
 
 void main() {
-  Paint.enableDithering = true;
   runApp(const SecRCController());
 }
 
