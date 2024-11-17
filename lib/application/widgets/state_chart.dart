@@ -11,6 +11,7 @@ class StateChart extends Container {
   static const double _border = 1;
   static const double _labelWidth = 80;
   static const double _leftPadding = 10;
+  final void Function(ChartSeriesController<ClimateHistory, int>)? onRendererCreated;
 
   StateChart(
       {Key? key,
@@ -22,7 +23,8 @@ class StateChart extends Container {
       required double width,
       num? Function(ClimateHistory climate, int index)? y2ValueMapper,
       double? minimum,
-      double? maximum})
+      double? maximum,
+      this.onRendererCreated})
       : super(
             key: key,
             margin: const EdgeInsets.symmetric(vertical: 5.0),
@@ -87,12 +89,13 @@ class StateChart extends Container {
                             animationDuration: 0
                             ),
                         FastLineSeries<ClimateHistory, int>(
+                          onRendererCreated: onRendererCreated,
                           // Bind data source
                           dataSource: history,
                           xValueMapper: (ClimateHistory climate, index) =>
                               index,
                           yValueMapper: yValueMapper,
-                          animationDuration: 2000,
+                          animationDuration: 750,
                           onCreateShader: (ShaderDetails details) {
                             return ui.Gradient.linear(details.rect.bottomCenter,
                                 details.rect.topCenter, colors, stops);

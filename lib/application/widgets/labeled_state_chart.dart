@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secrc_controller/application/widgets/state_chart.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../entities/climate_history.dart';
 import '../helpers/colors.dart';
@@ -28,7 +29,9 @@ class LabeledStateChart {
       num? Function(ClimateHistory climate, int index)? y2ValueMapper,
       required double minimum,
       required double maximum,
-      required double width})
+      required double width,
+      void Function(ChartSeriesController<ClimateHistory, int>)?
+          onRendererCreated})
       : super() {
     GradientConfig gradientConfig = GradientConfig(
         colors: colors,
@@ -50,6 +53,7 @@ class LabeledStateChart {
       minimum: minimum,
       maximum: maximum,
       width: width,
+      onRendererCreated: onRendererCreated,
     );
   }
 }

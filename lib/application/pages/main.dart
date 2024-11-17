@@ -16,6 +16,7 @@ import 'package:secrc_controller/entities/humidity.dart';
 import 'package:secrc_controller/entities/ventilation_mode.dart';
 import 'package:secrc_controller/repositories/repos.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'configuration.dart';
 
@@ -45,6 +46,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     ClimateHistory(
         temperature: 0, humidity: 0, heatIndex: 0, co2: 0, mode: 0, fanSpeed: 0)
   ];
+  List<ChartSeriesController> chartSeriesControllers = [];
 
   @override
   void dispose() {
@@ -57,6 +59,25 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     if (refreshTimer != null && refreshTimer!.isActive) {
       refreshTimer!.cancel();
     }
+  }
+
+  bool isUpdatedHistory(List<ClimateHistory> receivedHistory) {
+    bool isUpdated = false;
+    if (receivedHistory.length != history.length) {
+      isUpdated = true;
+    }
+    int index = 0;
+    while (!isUpdated && index < history.length) {
+      ClimateHistory existingData = history[index];
+      ClimateHistory receivedData = receivedHistory[index];
+      if (existingData.co2 != receivedData.co2 ||
+          existingData.humidity != receivedData.humidity ||
+          existingData.temperature != receivedData.temperature) {
+        isUpdated = true;
+      }
+      index++;
+    }
+    return isUpdated;
   }
 
   @override
@@ -203,9 +224,23 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       refreshingData = true;
     });
     return Repos.secRCRepository!.getHistory().then((value) {
+      bool updated = isUpdatedHistory(value);
+      if (updated) {
+        for (var controller in chartSeriesControllers) {
+          controller.isVisible = false;
+        }
+      }
       setState(() {
         history = value;
       });
+      if (updated) {
+        Future.delayed(Duration(milliseconds: 100)).whenComplete(() {
+          for (var controller in chartSeriesControllers) {
+            controller.isVisible = true;
+            controller.animate();
+          }
+        });
+      }
     }).catchError((error) {
       showError(context, "Error while getting data: ${error.message}");
     }).whenComplete(() {
@@ -342,6 +377,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                           Column(
                             children: [
                               LabeledStateChart(
+                                onRendererCreated: chartSeriesControllers.add,
                                 label: ChartLabel(
                                   "CO\u2082",
                                   co2?.toDouble(),
@@ -367,6 +403,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                                 width: chartWidth,
                               ).stateChart,
                               LabeledStateChart(
+                                onRendererCreated: chartSeriesControllers.add,
                                 label: ChartLabel(
                                   "TEMPERATURE",
                                   temperature,
@@ -391,6 +428,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                                 width: chartWidth,
                               ).stateChart,
                               LabeledStateChart(
+                                onRendererCreated: chartSeriesControllers.add,
                                 label: ChartLabel(
                                   "HUMIDITY",
                                   relativeHumidity,
@@ -413,6 +451,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                                 width: chartWidth,
                               ).stateChart,
                               LabeledStateChart(
+                                onRendererCreated: chartSeriesControllers.add,
                                 label: ChartLabel("FEELS LIKE",
                                     heatIndex?.toDouble(), "\u00B0C",
                                     stripDecimals: true),
